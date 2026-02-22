@@ -1,6 +1,7 @@
 # Stackler - A simple, stack-based language.
 Stackler is a simple, stack-based language, with insanely simple syntax.
 It allows only one opcode per line.
+Not turing complete as of now.
 ## Opcodes (i'm not that great at explaining)
 `(any number, negatives are supported)` : Pushes the number to the stack.</br>
 `+` : Pops the top two numbers on the stack and adds them together, then pushes the result to the stack.</br>
