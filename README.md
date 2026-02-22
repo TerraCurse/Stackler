@@ -21,3 +21,4 @@ Stackler is a simple, stack-based language, with insanely simple syntax.
 `∧` : Pops the top 2 numbers from the stack, performs an AND operation on the second number based off the first number (n2&n1 (stilllllll python)), and pushes the result to the stack.</br>
 `<` : Pops the top 2 numbers from the stack, bitshifts the second number (first number) times left, pushes the result to the stack.</br>
 `>` : Pops the top 2 numbers from the stack, bitshifts the second number (first number) times right, pushes the result to the stack.</br>
+`;` : Gets number input from the user, and pushes it to the stack. (will ask again if the input isnt a number)
