@@ -2,6 +2,7 @@ import math as m
 import sys as s
 import colorama as c
 labels = {}
+registers = {"R1":0,"R2":0,"R3":0,"R4":0,"R5":0}
 
 def definelabels(code:str):
     count = 0
@@ -175,6 +176,9 @@ def evaluate(tcode: str):
         elif opcode == "GT":
             n1 = stk.top()
             n2 = parts[1]
+            if n2.startswith("R"):
+                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                    n2 = str(registers[n2])
             if n1 > int(n2):
                 l += 1
             else:
@@ -182,6 +186,9 @@ def evaluate(tcode: str):
         elif opcode == "LT":
             n1 = stk.top()
             n2 = parts[1]
+            if n2.startswith("R"):
+                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                    n2 = str(registers[n2])
             if n1 < int(n2):
                 l += 1
             else:
@@ -189,6 +196,9 @@ def evaluate(tcode: str):
         elif opcode == "GE":
             n1 = stk.top()
             n2 = parts[1]
+            if n2.startswith("R"):
+                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                    n2 = str(registers[n2])
             if n1 >= int(n2):
                 l += 1
             else:
@@ -196,6 +206,9 @@ def evaluate(tcode: str):
         elif opcode == "LE":
             n1 = stk.top()
             n2 = parts[1]
+            if n2.startswith("R"):
+                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                    n2 = str(registers[n2])
             if n1 <= int(n2):
                 l += 1
             else:
@@ -203,6 +216,9 @@ def evaluate(tcode: str):
         elif opcode == "EQ":
             n1 = stk.top()
             n2 = parts[1]
+            if n2.startswith("R"):
+                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                    n2 = str(registers[n2])
             if n1 == int(n2):
                 l += 1
             else:
@@ -210,16 +226,38 @@ def evaluate(tcode: str):
         elif opcode == "NE":
             n1 = stk.top()
             n2 = parts[1]
+            if n2.startswith("R"):
+                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                    n2 = str(registers[n2])
             if n1 != int(n2):
                 l += 1
             else:
                 l += 2
+        elif opcode == "SR":
+            v = stk.pop()
+            regnum = parts[1]
+            if int(regnum) > 5 or int(regnum) < 1:
+                print(c.Fore.RED + f"Invalid register: R{regnum}!" + c.Fore.RESET)
+                input("Press enter to exit.")
+                exit()
+            registers[f"R{regnum}"] = v
+            l += 1
+        elif opcode == "LR":
+            regnum = parts[1]
+            if int(regnum) > 5 or int(regnum) < 1:
+                print(c.Fore.RED + f"Invalid register: R{regnum}!" + c.Fore.RESET)
+                input("Press enter to exit.")
+                exit()
+            stk.push(registers[f"R{regnum}"])
+            l += 1
         else:
             l += 1
+    print(stk.bf)
 if len(s.argv) > 1:
     f = open(s.argv[1])
     evaluate(f.read())
     input("Press enter to exit.")
+    print(registers)
     exit()
 else:
     print("No file specified for interpretation.")
