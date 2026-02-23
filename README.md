@@ -28,8 +28,9 @@ Turing complete!
 `⊻` : Pops the top 2 numbers from the stack, performs an XOR operation on the second number based off the first number (n2^n1 (still python)), and pushes the result to the stack.</br>
 `V` : Pops the top 2 numbers from the stack, performs an OR operation on the second number based off the first number (n2|n1 (stillll python)), and pushes the result to the stack.</br>
 `∧` : Pops the top 2 numbers from the stack, performs an AND operation on the second number based off the first number (n2&n1 (stilllllll python)), and pushes the result to the stack.</br>
-`<` : Pops the top 2 numbers from the stack, bitshifts the second number (first number) times left, pushes the result to the stack.</br>
-`>` : Pops the top 2 numbers from the stack, bitshifts the second number (first number) times right, pushes the result to the stack.</br>
+`<` : Pops the top 2 numbers from the stack, bitshifts the second number (first number) times left (n2 << n1), pushes the result to the stack.</br>
+`>` : Pops the top 2 numbers from the stack, bitshifts the second number (first number) times right (n2 >> n1), pushes the result to the stack.</br>
+`~` : Pops the top number from the stack, performs a bitwise NOT operation on it (~n1) and pushes it back to the stack.</br>
 ### Input
 `;` : Gets number input from the user, and pushes it to the stack. (will ask again if the input isnt a number)</br>
 ### Control
