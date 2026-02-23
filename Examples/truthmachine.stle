@@ -1,0 +1,8 @@
+;
+EQ 1
+J loop
+."0"
+E
+[loop
+."1"
+J loop
