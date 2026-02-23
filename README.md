@@ -1,8 +1,9 @@
 # Stackler - A simple, stack-based language.
 Stackler is a simple, stack-based language, with insanely simple syntax.
 It allows only one opcode per line.
-Not turing complete as of now.
+Turing complete!
 ## Opcodes (i'm not that great at explaining)
+`[(labelname)` : Defines a label.
 `(any number, negatives are supported)` : Pushes the number to the stack.</br>
 `+` : Pops the top two numbers on the stack and adds them together, then pushes the result to the stack.</br>
 `-` : Pops the top two numbers on the stack and subtracts the first one from the second one (reverse polish notation), then pushes the result to the stack (reverse polish notation).</br>
@@ -27,3 +28,11 @@ Not turing complete as of now.
 `E` : Halts the program.</br>
 `SR (register number)` : Pops the top value from the stack and saves it to the specified register. (Available registers: 1, 2, 3, 4, 5 {you can also call them r1, r2, r3, r4, r5})</br>
 `LR (register number)` : Pushes the value of the specified register into the stack.</br>
+`X` : Pops a value from the stack. (basically just deletes it).</br>
+`J (label)` : Jumps to the specified label.</br>
+`GT (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop > value) (example: GT R1)</br>
+`LT (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop < value) (example: LT R1)</br>
+`GE (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop >= value) (example: GE R1)</br>
+`LE (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop <= value) (example: LE R1)</br>
+`EQ (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop == value) (example: EQ R1)</br>
+`NE (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop != value) (example: NE R1)</br>
