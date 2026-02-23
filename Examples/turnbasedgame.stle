@@ -1,0 +1,82 @@
+10
+SR 1
+12
+SR 2
+."/-----------------\"
+."|  you      enemy |"
+."\-----------------/"
+."You are about to fight an enemy! You have: 12 HP, the enemy has: 10 HP."
+[damageloop
+LR 1
+LT 1
+J victory
+LR 2
+LT 1
+J loss
+X
+."1 : Use magic (4 dmg)"
+."2 : Punch (2 dmg)"
+;
+EQ 1
+J magic
+EQ 2
+J punch
+J damageloop
+[magic
+."You dealt 4 damage! The enemy has:"
+LR 1
+D
+D
+D
+D
+SR 1
+LR 1
+:
+,
+."HP"
+LT 1
+J victory
+RN 1 5
+."The enemy dealt"
+:
+,
+."DMG to you! You now have:"
+LR 2
+\
+-
+:
+,
+."HP."
+SR 2
+J damageloop
+[punch
+."You dealt 2 damage! The enemy has:"
+LR 1
+D
+D
+SR 1
+LR 1
+:
+,
+."HP"
+LT 1
+J victory
+RN 1 5
+."The enemy dealt"
+:
+,
+."DMG to you! You now have:"
+LR 2
+\
+-
+:
+,
+."HP."
+SR 2
+J damageloop
+[victory
+."You killed the enemy!"
+E
+[loss
+."You died!"
+E
