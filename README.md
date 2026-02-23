@@ -46,6 +46,8 @@ Turing complete!
 `LE (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop <= value) (example: LE R1)</br>
 `EQ (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop == value) (example: EQ R1)</br>
 `NE (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop != value) (example: NE R1)</br>
+`I` : Pops the top value from the stack, increments it by 1 and pushes it back onto the stack.
+`D` : Pops the top value from the stack, decrements it by 1 and pushes it back onto the stack.
 # Example Programs
 ### Truth Machine
 ```
