@@ -1,6 +1,7 @@
 import math as m
 import sys as s
 import colorama as c
+import random as r
 labels = {}
 registers = {"R1":0,"R2":0,"R3":0,"R4":0,"R5":0}
 
@@ -8,7 +9,7 @@ def definelabels(code:str):
     count = 0
     for line in code.splitlines():
         if line.startswith("["):
-            labels[line[1:]] = count
+            labels[line[1:].strip()] = count
             count += 1
             continue
         count += 1
@@ -25,10 +26,14 @@ def getnuminp(inptext):
             print("Invalid input: Numbers only.")
     return numinp
 
+def getcharinp(inptext, charcount):
+    return input(inptext)[:charcount]
+
 class Stack:
     def __init__(self, stack_size):
         self.bf = [0 for _ in range(stack_size)]
         self.sp = -1
+        self.size = stack_size
 
     def push(self, num):
         try:
@@ -51,6 +56,10 @@ class Stack:
         number = self.bf[self.sp]
         self.sp -= 1
         return number
+
+    def clear(self):
+        self.bf = [0 for _ in range(self.size)]
+        self.sp = -1
 
     def top(self):
         return self.bf[self.sp]
@@ -171,82 +180,129 @@ def evaluate(tcode: str):
             stk.pop()
             l += 1
         elif opcode == "J":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"J ; Missing label to jump to!" + c.Fore.RESET)
+                exit()
             label = parts[1]
-            l = labels[label]
+            if label in labels:
+                l = labels[label]
+            else:
+                print(c.Fore.RED + f"J ; Invalid label!" + c.Fore.RESET)
+                exit()
         elif opcode == "GT":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"GT ; Missing number to compare to!" + c.Fore.RESET)
+                exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
-                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                if n2 in registers:
                     n2 = str(registers[n2])
+                else:
+                    print(c.Fore.RED + f"GT ; Invalid register number: {n2}!" + c.Fore.RESET)
+                    exit()
             if n1 > int(n2):
                 l += 1
             else:
                 l += 2
         elif opcode == "LT":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"LT ; Missing number to compare to!" + c.Fore.RESET)
+                exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
-                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                if n2 in registers:
                     n2 = str(registers[n2])
+                else:
+                    print(c.Fore.RED + f"LT ; Invalid register number: {n2}!" + c.Fore.RESET)
+                    exit()
             if n1 < int(n2):
                 l += 1
             else:
                 l += 2
         elif opcode == "GE":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"GE ; Missing number to compare to!" + c.Fore.RESET)
+                exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
-                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                if n2 in registers:
                     n2 = str(registers[n2])
+                else:
+                    print(c.Fore.RED + f"GE ; Invalid register number: {n2}!" + c.Fore.RESET)
+                    exit()
             if n1 >= int(n2):
                 l += 1
             else:
                 l += 2
         elif opcode == "LE":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"LE ; Missing number to compare to!" + c.Fore.RESET)
+                exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
-                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                if n2 in registers:
                     n2 = str(registers[n2])
+                else:
+                    print(c.Fore.RED + f"LE ; Invalid register number: {n2}!" + c.Fore.RESET)
+                    exit()
             if n1 <= int(n2):
                 l += 1
             else:
                 l += 2
         elif opcode == "EQ":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"EQ ; Missing number to compare to!" + c.Fore.RESET)
+                exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
-                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                if n2 in registers:
                     n2 = str(registers[n2])
+                else:
+                    print(c.Fore.RED + f"EQ ; Invalid register number: {n2}!" + c.Fore.RESET)
+                    exit()
             if n1 == int(n2):
                 l += 1
             else:
                 l += 2
         elif opcode == "NE":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"NE ; Missing number to compare to!" + c.Fore.RESET)
+                exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
-                if int(n2[1:]) <= 5 and int(n2[1:]) >= 1:
+                if n2 in registers:
                     n2 = str(registers[n2])
+                else:
+                    print(c.Fore.RED + f"NE ; Invalid register number: {n2}!" + c.Fore.RESET)
+                    exit()
             if n1 != int(n2):
                 l += 1
             else:
                 l += 2
         elif opcode == "SR":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"SR ; Missing register number!" + c.Fore.RESET)
+                exit()
             v = stk.pop()
             regnum = parts[1]
-            if int(regnum) > 5 or int(regnum) < 1:
-                print(c.Fore.RED + f"Invalid register: R{regnum}!" + c.Fore.RESET)
-                input("Press enter to exit.")
+            if f"R{regnum}" not in registers:
+                print(c.Fore.RED + f"SR ; Invalid register: R{regnum}!" + c.Fore.RESET)
                 exit()
             registers[f"R{regnum}"] = v
             l += 1
         elif opcode == "LR":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"SR ; Missing register number!" + c.Fore.RESET)
+                exit()
             regnum = parts[1]
-            if int(regnum) > 5 or int(regnum) < 1:
-                print(c.Fore.RED + f"Invalid register: R{regnum}!" + c.Fore.RESET)
-                input("Press enter to exit.")
+            if f"R{regnum}" not in registers:
+                print(c.Fore.RED + f"SR ; Invalid register: R{regnum}!" + c.Fore.RESET)
                 exit()
             stk.push(registers[f"R{regnum}"])
             l += 1
@@ -261,6 +317,39 @@ def evaluate(tcode: str):
         elif opcode == "~":
             val = stk.pop()
             stk.push(~val)
+            l += 1
+        elif opcode == "RS":
+            stk.clear()
+            l += 1
+        elif opcode == "RR":
+            if len(parts) < 2:
+                print(c.Fore.RED + f"SR ; Missing register number!" + c.Fore.RESET)
+                exit()
+            registernum = parts[1]
+            if f"R{registernum}" not in registers:
+                print(c.Fore.RED + f"SR ; Invalid register: R{regnum}!" + c.Fore.RESET)
+                exit()
+            registers[f"R{registernum}"] = 0
+            l += 1
+        elif opcode == "C;":
+            char = getcharinp("C;", 1)
+            stk.push(ord(char))
+            l += 1
+        elif opcode == "C,":
+            val = stk.pop()
+            print(chr(val % 256), end="")
+            l += 1
+        elif opcode == "RN":
+            if len(parts) < 3:
+                if len(parts) == 2:
+                    print(c.Fore.RED + f"RN ; Missing MAX argument! (RN min max)" + c.Fore.RESET)
+                    exit()
+                else:
+                    print(c.Fore.RED + f"RN ; Missing MIN and MAX argument! (RN min max)" + c.Fore.RESET)
+                    exit()
+            minimum = int(parts[1])
+            maximum = int(parts[2])
+            stk.push(r.randint(minimum,maximum))
             l += 1
         else:
             l += 1
