@@ -23,4 +23,7 @@ Not turing complete as of now.
 `∧` : Pops the top 2 numbers from the stack, performs an AND operation on the second number based off the first number (n2&n1 (stilllllll python)), and pushes the result to the stack.</br>
 `<` : Pops the top 2 numbers from the stack, bitshifts the second number (first number) times left, pushes the result to the stack.</br>
 `>` : Pops the top 2 numbers from the stack, bitshifts the second number (first number) times right, pushes the result to the stack.</br>
-`;` : Gets number input from the user, and pushes it to the stack. (will ask again if the input isnt a number)
+`;` : Gets number input from the user, and pushes it to the stack. (will ask again if the input isnt a number)</br>
+`E` : Halts the program.</br>
+`SR (register number)` : Pops the top value from the stack and saves it to the specified register. (Available registers: 1, 2, 3, 4, 5 {you can also call them r1, r2, r3, r4, r5})</br>
+`LR (register number)` : Pushes the value of the specified register into the stack.</br>
