@@ -167,7 +167,7 @@ def evaluate(tcode: str):
         elif opcode == ";":
             stk.push(getnuminp(";"))
             l += 1
-        elif opcode == "x":
+        elif opcode == "X":
             stk.pop()
             l += 1
         elif opcode == "J":
@@ -262,4 +262,5 @@ if len(s.argv) > 1:
 else:
     print("No file specified for interpretation.")
     input("Press enter to exit.")
+
     exit()
