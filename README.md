@@ -79,4 +79,18 @@ GT 0
 J loop
 E
 ```
+Explanation: Pushes 10 to the stack (`10`), declares a label (`[loop`), duplicates the top stack value which is 10 (`:`), prints it out (`,`), decrements the current top value {which is 10} by 1 (`D`), if the top stack value {which is now 9} is greater than 0 (`GT 0`), then it jumps back to the loop label (`J loop`) which makes it loop until the countdown is at 0, else it ends the program (`E`).
+### Square Countdown
+```
+10
+[loop
+:
+**
+,
+D
+GT 0
+J loop
+E
+```
 Explanation: Pushes 10 to the stack (`10`), declares a label (`[loop`), duplicates the top stack value which is 10 (`:`), squares it (`**`), prints it out (`,`), decrements the current top value {which is 10} by 1 (`D`), if the top stack value {which is now 9} is greater than 0 (`GT 0`), then it jumps back to the loop label (`J loop`) which makes it loop until the countdown is at 0, else it ends the program (`E`).
+
