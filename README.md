@@ -37,7 +37,7 @@ Turing complete!
 `X` : Pops a value from the stack. (basically just deletes it).</br>
 `J (label)` : Jumps to the specified label.</br>
 ### Register-related
-`SR (register number)` : Pops the top value from the stack and saves it to the specified register. (Available registers: 1, 2, 3, 4, 5 {you can also call them r1, r2, r3, r4, r5})</br>
+`SR (register number)` : Pops the top value from the stack and saves it to the specified register. (Available registers: 1, 2, 3, 4, 5)</br>
 `LR (register number)` : Pushes the value of the specified register into the stack.</br>
 ### Comparisons
 `GT (value)` : Compares the top stack value to the specified value, you can also specify a register. (stacktop > value) (example: GT R1)</br>
