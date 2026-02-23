@@ -4,7 +4,7 @@ It allows only one opcode per line.
 Turing complete!
 ## Opcodes (i'm not that great at explaining)
 ### Labels, Numbers
-`[(labelname)` : Defines a label.
+`[(labelname)` : Defines a label.</br>
 `(any number, negatives are supported)` : Pushes the number to the stack.</br>
 `RN (min) (max)` : Pushes a random number between the specified range to the stack.</br>
 ### Arithmetic
