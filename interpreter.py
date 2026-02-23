@@ -258,6 +258,10 @@ def evaluate(tcode: str):
             val = stk.pop()
             stk.push(val - 1)
             l += 1
+        elif opcode == "~":
+            val = stk.pop()
+            stk.push(~val)
+            l += 1
         else:
             l += 1
 if len(s.argv) > 1:
