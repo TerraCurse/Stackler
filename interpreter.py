@@ -250,17 +250,22 @@ def evaluate(tcode: str):
                 exit()
             stk.push(registers[f"R{regnum}"])
             l += 1
+        elif opcode == "I":
+            val = stk.pop()
+            stk.push(val + 1)
+            l += 1
+        elif opcode == "D":
+            val = stk.pop()
+            stk.push(val - 1)
+            l += 1
         else:
             l += 1
-    print(stk.bf)
 if len(s.argv) > 1:
     f = open(s.argv[1])
     evaluate(f.read())
     input("Press enter to exit.")
-    print(registers)
     exit()
 else:
     print("No file specified for interpretation.")
     input("Press enter to exit.")
-
     exit()
