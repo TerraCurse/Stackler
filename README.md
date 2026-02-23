@@ -73,7 +73,6 @@ Explanation: Asks the user for number input (`;`), squares the number inputted (
 10
 [loop
 :
-**
 ,
 D
 GT 0
