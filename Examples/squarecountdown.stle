@@ -1,0 +1,9 @@
+10
+[loop
+:
+**
+,
+D
+GT 0
+J loop
+E
