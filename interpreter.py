@@ -68,6 +68,7 @@ def evaluate(tcode: str):
     stk = Stack(256)
     definelabels(tcode)
     l = 0
+    custom_opcodes = {}
     split = tcode.splitlines()
     while l < len(split):
         parts = split[l].split(" ")
@@ -83,7 +84,10 @@ def evaluate(tcode: str):
             continue
         except ValueError:
             pass
-        if opcode == "E":
+        if opcode in custom_opcodes:
+            custom_opcodes[opcode](stk,registers)
+            l += 1
+        elif opcode == "E":
             """End"""
             break
         elif opcode == "+":
@@ -393,6 +397,23 @@ def evaluate(tcode: str):
             l += 1
         elif opcode == "COM":
             """Comment"""
+            l += 1
+        elif opcode == "USE":
+            """import basically"""
+            if len(parts) < 2:
+                print(c.Fore.RED + f"USE ; Missing module filename!" + c.Fore.RESET)
+                exit()
+            filename = parts[1]
+            try:
+                module = {}
+                exec(open(f"./Modules/{filename}").read(), {}, module)
+                if "opcodes" in module:
+                    custom_opcodes.update(module["opcodes"])
+                else:
+                    print(c.Fore.YELLOW + f"USE ; Specified module has no opcodes dict. Please check {filename} and add it in. Check examples to see how to use it." + c.Fore.RESET)
+            except OSError as e:
+                print(c.Fore.RED + f"USE ; OS Error: {e}" + c.Fore.RESET)
+                exit()
             l += 1
         else:
             print(c.Fore.RED + f"INTERPRETER ; Invalid opcode: '{split[l]}'! Line: {l+1}" + c.Fore.RESET)
