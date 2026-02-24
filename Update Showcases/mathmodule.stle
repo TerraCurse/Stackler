@@ -1,0 +1,17 @@
+COM This showcases some opcodes from the WIP standard math module, doesnt show all opcodes cause yes
+USE math.py
+3
+COM Cube
+***
+:
+,
+COM Cube Root
+\\
+,
+COM 4 digits of E (2718 because no floats yuh)
+M:E
+,
+COM 4 digits of PI (3142 because no floats)
+PI
+,
+COM there is some more opcodes like for example TAN, but it gives you only 4 digits of the result (90 TAN == -1995)
