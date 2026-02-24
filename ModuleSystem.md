@@ -94,3 +94,7 @@ Code snippet:
 USE module.py
 HRT
 ```
+You can also unload the module once you're sure you wont use it again.</br>
+```
+UNLOAD module.py
+```

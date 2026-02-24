@@ -2,6 +2,7 @@ import math as m
 import sys as s
 import colorama as c
 import random as r
+import importlib as il
 labels = {}
 registers = {"R1":0,"R2":0,"R3":0,"R4":0,"R5":0}
 def definelabels(code:str):
@@ -69,6 +70,7 @@ def evaluate(tcode: str):
     definelabels(tcode)
     l = 0
     custom_opcodes = {}
+    loaded_modules = {}
     split = tcode.splitlines()
     while l < len(split):
         parts = split[l].split(" ")
@@ -406,18 +408,39 @@ def evaluate(tcode: str):
             if len(parts) < 2:
                 print(c.Fore.RED + f"USE ; Missing module filename!" + c.Fore.RESET)
                 exit()
-            filename = parts[1]
+            modname = parts[1].replace(".py", "")
+            fullpath = f"Modules.{modname}"
+            if modname in loaded_modules:
+                print(c.Fore.YELLOW + f"USE ; Module '{modname}' is already loaded." + c.Fore.RESET)
             try:
-                module = {}
-                exec(open(f"./Modules/{filename}").read(), {}, module)
-                if "opcodes" in module:
-                    custom_opcodes.update(module["opcodes"])
-                else:
-                    print(c.Fore.YELLOW + f"USE ; Specified module has no opcodes dict. Please check {filename} and add it in. Check examples to see how to use it." + c.Fore.RESET)
-            except OSError as e:
-                print(c.Fore.RED + f"USE ; OS Error: {e}" + c.Fore.RESET)
+                # module = {}
+                #exec(open(f"./Modules/{filename}").read(), {}, module)
+                #if "opcodes" in module:
+                #    custom_opcodes.update(module["opcodes"])
+                #    loaded_modules.append(filename)
+                #else:
+                #    print(c.Fore.YELLOW + f"USE ; Specified module has no opcodes dict. Please check {filename} and add it in. Check examples to see how to use it." + c.Fore.RESET)
+                mod = il.import_module(fullpath)
+                loaded_modules[modname] = mod
+                for name, func in mod.opcodes.items():
+                    custom_opcodes[name] = func
+            except ModuleNotFoundError as e:
+                print(c.Fore.RED + f"USE ; Module '{modname}' not found!" + c.Fore.RESET)
                 exit()
             l += 1
+        elif opcode == "UNLOAD":
+            """unloads custom opcodes from specified module"""
+            if len(parts) < 2:
+                print(c.Fore.RED + f"UNLOAD ; Missing module filename!" + c.Fore.RESET)
+                exit()
+            modname = parts[1].replace(".py", "")
+            if modname not in loaded_modules:
+                print(c.Fore.RED + f"UNLOAD ; Module '{modname}' is not loaded!" + c.Fore.RESET)
+            else:
+                mod = loaded_modules.pop(modname)
+                for op in mod.opcodes.keys():
+                    custom_opcodes.pop(op, None)
+            l += 1       
         else:
             print(c.Fore.RED + f"INTERPRETER ; Invalid opcode: '{split[l]}'! Line: {l+1}" + c.Fore.RESET)
             exit()
