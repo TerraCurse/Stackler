@@ -16,17 +16,17 @@ Why functions? Well the system works by searching for custom opcodes in a custom
 Lets for example make a hello world opcode,
 First we need the function so copy the following:
 ```python
-def HelloWorld(stack, registers):
+def HelloWorld(stack, registers, arguments):
     pass
 ```
 Now we need to add actual functionality to the function, so lets make it print "Hello, World!"
 ```python
-def HelloWorld(stack, registers):
+def HelloWorld(stack, registers, arguments):
     print("Hello, World!")
 ```
 Nice! Now we need to put its opcode/alias into an opcodes dictionary, so lets do that!
 ```python
-def HelloWorld(stack, registers):
+def HelloWorld(stack, registers, arguments):
     print("Hello, World!")
 # the opcodes dictionary, defines all opcodes in this module
 opcodes = {
@@ -81,6 +81,11 @@ registers["R1"] = 5 # or any other register, this modifies the registers value
 ```
 NOTE: Please only put number values into registers.
 
+# Using arguments
+Arguments can be used for alot of things, the interpreter automatically supplies a list of arguments based off of space splitting.</br>
+You can use arguments for for example, how many times you print "<3"</br>
+Theres alot of uses to say the least.</br>
+You can look in the example module file in the modules folder to see how its used there.</br>
 # Using your module
 Using your module in a stackler file is relatively easy</br>
 You basically import it using the `USE` opcode.</br>

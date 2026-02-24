@@ -85,8 +85,11 @@ def evaluate(tcode: str):
         except ValueError:
             pass
         if opcode in custom_opcodes:
-            custom_opcodes[opcode](stk,registers)
-            l += 1
+            offset = custom_opcodes[opcode](stk,registers, parts[1:])
+            if offset is None:
+                l += 1
+            else:
+                l += offset
         elif opcode == "E":
             """End"""
             break
