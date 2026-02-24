@@ -4,7 +4,6 @@ import colorama as c
 import random as r
 labels = {}
 registers = {"R1":0,"R2":0,"R3":0,"R4":0,"R5":0}
-
 def definelabels(code:str):
     count = 0
     for line in code.splitlines():
