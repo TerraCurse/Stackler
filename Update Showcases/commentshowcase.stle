@@ -1,0 +1,7 @@
+COM Hello, im a comment!
+COM I get ignored/skipped by the interpreter
+COM You can also put inline comments after valid opcodes and its required arguments
+COM If the explanation was slightly bad, look below me.
+5 I'm an inline comment!
+EQ 5 Me too! I can be here since all of the opcodes arguments were satisfied!
+."5 is equal to 5 (eureka)"
