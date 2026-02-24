@@ -1,5 +1,5 @@
 COM This showcases some opcodes from the WIP standard math module, doesnt show all opcodes cause yes
-USE math.py
+USE moremath
 3
 COM Cube
 ***

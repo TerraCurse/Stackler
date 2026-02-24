@@ -5,7 +5,7 @@ Stackler assumes that the module is located in the modules folder, so make sure 
 ### Folder structure:
 ```
 Stackler/
-├─ interpreter.py
+├─ stackler.exe
 └─ Modules/
    └─ mymodule.py
 ```
@@ -14,7 +14,8 @@ Stackler/
 Once your done, its time to write some functions!
 Why functions? Well the system works by searching for custom opcodes in a custom opcodes dictionary, if it finds the custom opcode it will run the function behind it.
 Lets for example make a hello world opcode,
-First we need the function so copy the following:
+First we need the function so copy the following:</br>
+***NOTE: MAKE SURE TO STRUCTURE THE FUNC ARGS LIKE THIS: STACK IS ALWAYS FIRST, THEN IS REGISTERS, THEN IS ARGUMENTS, YOU CAN NAME THEM WHATEVER YOU WANT JUST MAKE SURE THEY'RE IN THE CORRECT ORDER***
 ```python
 def HelloWorld(stack, registers, arguments):
     pass
@@ -86,15 +87,19 @@ Arguments can be used for alot of things, the interpreter automatically supplies
 You can use arguments for for example, how many times you print "<3"</br>
 Theres alot of uses to say the least.</br>
 You can look in the example module file in the modules folder to see how its used there.</br>
+Example:</br>
+```python
+print(f"You said: {arguments[0]}")
+```
 # Using your module
 Using your module in a stackler file is relatively easy</br>
 You basically import it using the `USE` opcode.</br>
 Code snippet:
 ```
-USE module.py
+USE module
 HRT
 ```
 You can also unload the module once you're sure you wont use it again.</br>
 ```
-UNLOAD module.py
+UNLOAD module
 ```

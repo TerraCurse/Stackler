@@ -9,8 +9,8 @@ Turing complete!
 `RN (min) (max)` : Pushes a random number between the specified range to the stack.</br>
 ### Extra
 `COM (comment)` : The entire line with this opcode gets ignored by the interpreter, like a comment. Inline comments are supported, any text following a valid opcode and its required arguments counts as an inline comment.</br>
-`USE (module.py)` : Basically imports the given python file as a module/library, allowing you to use opcodes from it, no you dont have to do module.HRT or anything like that, well it could lead to conflicts but ya get the idea. Check the [module system guide](ModuleSystem.md) out if you wanna make a module.</br>
-`UNLOAD (module.py)` : Unloads the given module, usefull if you dont need the specified module now or just wanna add an extra line of code for whatever reason. Check the [module system guide](ModuleSystem.md) out if you wanna make a module.</br>
+`USE (module)` : Basically imports the given python file as a module/library, allowing you to use opcodes from it, no you dont have to do module.HRT or anything like that, well it could lead to conflicts but ya get the idea. Check the [module system guide](ModuleSystem.md) out if you wanna make a module.</br>
+`UNLOAD (module)` : Unloads the given module, usefull if you dont need the specified module now or just wanna add an extra line of code for whatever reason. Check the [module system guide](ModuleSystem.md) out if you wanna make a module.</br>
 ### Arithmetic
 `+` : Pops the top two numbers on the stack and adds them together, then pushes the result to the stack.</br>
 `-` : Pops the top two numbers on the stack and subtracts the first one from the second one (reverse polish notation), then pushes the result to the stack (reverse polish notation).</br>

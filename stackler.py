@@ -3,8 +3,12 @@ import sys as s
 import colorama as c
 import random as r
 import importlib as il
+import os as o
 labels = {}
 registers = {"R1":0,"R2":0,"R3":0,"R4":0,"R5":0}
+modules_path = o.path.abspath("Modules")
+if modules_path not in s.path:
+    s.path.insert(0, modules_path)
 def definelabels(code:str):
     count = 0
     for line in code.splitlines():
@@ -42,7 +46,7 @@ class Stack:
         except IndexError:
             print(c.Fore.RED + "ERROR: Attempted to push a number when stack was full." + c.Fore.RESET)
             input("Press enter to exit.")
-            exit()
+            s.exit()
 
     def pop(self):
         if self.sp < 0:
@@ -52,7 +56,7 @@ class Stack:
                 + c.Fore.RESET
             )
             input("Press enter to exit.")
-            exit()
+            s.exit()
         number = self.bf[self.sp]
         self.sp -= 1
         return number
@@ -215,18 +219,18 @@ def evaluate(tcode: str):
             """Jump"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"J ; Missing label to jump to!" + c.Fore.RESET)
-                exit()
+                s.exit()
             label = parts[1]
             if label in labels:
                 l = labels[label]
             else:
                 print(c.Fore.RED + f"J ; Invalid label!" + c.Fore.RESET)
-                exit()
+                s.exit()
         elif opcode == "GT":
             """If Greater Than"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"GT ; Missing number to compare to!" + c.Fore.RESET)
-                exit()
+                s.exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
@@ -234,7 +238,7 @@ def evaluate(tcode: str):
                     n2 = str(registers[n2])
                 else:
                     print(c.Fore.RED + f"GT ; Invalid register number: {n2}!" + c.Fore.RESET)
-                    exit()
+                    s.exit()
             if n1 > int(n2):
                 l += 1
             else:
@@ -243,7 +247,7 @@ def evaluate(tcode: str):
             """If Less Than"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"LT ; Missing number to compare to!" + c.Fore.RESET)
-                exit()
+                s.exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
@@ -251,7 +255,7 @@ def evaluate(tcode: str):
                     n2 = str(registers[n2])
                 else:
                     print(c.Fore.RED + f"LT ; Invalid register number: {n2}!" + c.Fore.RESET)
-                    exit()
+                    s.exit()
             if n1 < int(n2):
                 l += 1
             else:
@@ -260,7 +264,7 @@ def evaluate(tcode: str):
             """If Greater of Equal"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"GE ; Missing number to compare to!" + c.Fore.RESET)
-                exit()
+                s.exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
@@ -268,7 +272,7 @@ def evaluate(tcode: str):
                     n2 = str(registers[n2])
                 else:
                     print(c.Fore.RED + f"GE ; Invalid register number: {n2}!" + c.Fore.RESET)
-                    exit()
+                    s.exit()
             if n1 >= int(n2):
                 l += 1
             else:
@@ -277,7 +281,7 @@ def evaluate(tcode: str):
             """If Less or Equal"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"LE ; Missing number to compare to!" + c.Fore.RESET)
-                exit()
+                s.exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
@@ -285,7 +289,7 @@ def evaluate(tcode: str):
                     n2 = str(registers[n2])
                 else:
                     print(c.Fore.RED + f"LE ; Invalid register number: {n2}!" + c.Fore.RESET)
-                    exit()
+                    s.exit()
             if n1 <= int(n2):
                 l += 1
             else:
@@ -294,7 +298,7 @@ def evaluate(tcode: str):
             """If Equal"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"EQ ; Missing number to compare to!" + c.Fore.RESET)
-                exit()
+                s.exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
@@ -302,7 +306,7 @@ def evaluate(tcode: str):
                     n2 = str(registers[n2])
                 else:
                     print(c.Fore.RED + f"EQ ; Invalid register number: {n2}!" + c.Fore.RESET)
-                    exit()
+                    s.exit()
             if n1 == int(n2):
                 l += 1
             else:
@@ -311,7 +315,7 @@ def evaluate(tcode: str):
             """If Not Equal"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"NE ; Missing number to compare to!" + c.Fore.RESET)
-                exit()
+                s.exit()
             n1 = stk.top()
             n2 = parts[1]
             if n2.startswith("R"):
@@ -319,7 +323,7 @@ def evaluate(tcode: str):
                     n2 = str(registers[n2])
                 else:
                     print(c.Fore.RED + f"NE ; Invalid register number: {n2}!" + c.Fore.RESET)
-                    exit()
+                    s.exit()
             if n1 != int(n2):
                 l += 1
             else:
@@ -328,23 +332,23 @@ def evaluate(tcode: str):
             """Pop from the stack and save the value to the specified register"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"SR ; Missing register number!" + c.Fore.RESET)
-                exit()
+                s.exit()
             v = stk.pop()
             regnum = parts[1]
             if f"R{regnum}" not in registers:
                 print(c.Fore.RED + f"SR ; Invalid register: R{regnum}!" + c.Fore.RESET)
-                exit()
+                s.exit()
             registers[f"R{regnum}"] = v
             l += 1
         elif opcode == "LR":
             """Load value from specified register and push it"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"SR ; Missing register number!" + c.Fore.RESET)
-                exit()
+                s.exit()
             regnum = parts[1]
             if f"R{regnum}" not in registers:
                 print(c.Fore.RED + f"SR ; Invalid register: R{regnum}!" + c.Fore.RESET)
-                exit()
+                s.exit()
             stk.push(registers[f"R{regnum}"])
             l += 1
         elif opcode == "I":
@@ -370,11 +374,11 @@ def evaluate(tcode: str):
             """Reset specified register"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"SR ; Missing register number!" + c.Fore.RESET)
-                exit()
+                s.exit()
             registernum = parts[1]
             if f"R{registernum}" not in registers:
                 print(c.Fore.RED + f"SR ; Invalid register: R{regnum}!" + c.Fore.RESET)
-                exit()
+                s.exit()
             registers[f"R{registernum}"] = 0
             l += 1
         elif opcode == "C;":
@@ -392,10 +396,10 @@ def evaluate(tcode: str):
             if len(parts) < 3:
                 if len(parts) == 2:
                     print(c.Fore.RED + f"RN ; Missing MAX argument! (RN min max)" + c.Fore.RESET)
-                    exit()
+                    s.exit()
                 else:
                     print(c.Fore.RED + f"RN ; Missing MIN and MAX argument! (RN min max)" + c.Fore.RESET)
-                    exit()
+                    s.exit()
             minimum = int(parts[1])
             maximum = int(parts[2])
             stk.push(r.randint(minimum,maximum))
@@ -407,11 +411,15 @@ def evaluate(tcode: str):
             """import basically"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"USE ; Missing module filename!" + c.Fore.RESET)
-                exit()
-            modname = parts[1].replace(".py", "")
-            fullpath = f"Modules.{modname}"
-            if modname in loaded_modules:
-                print(c.Fore.YELLOW + f"USE ; Module '{modname}' is already loaded." + c.Fore.RESET)
+                s.exit()
+            modname = parts[1]
+            modkey = modname.replace(".py","").replace(".pyd","")
+            fullpath = f"Modules.{modkey}"
+            modules_path = o.path.abspath("Modules")
+            if modules_path not in s.path:
+                s.path.insert(0, modules_path)
+            if modkey in loaded_modules:
+                print(c.Fore.YELLOW + f"USE ; Module '{modkey}' is already loaded." + c.Fore.RESET)
             try:
                 # module = {}
                 #exec(open(f"./Modules/{filename}").read(), {}, module)
@@ -420,39 +428,45 @@ def evaluate(tcode: str):
                 #    loaded_modules.append(filename)
                 #else:
                 #    print(c.Fore.YELLOW + f"USE ; Specified module has no opcodes dict. Please check {filename} and add it in. Check examples to see how to use it." + c.Fore.RESET)
-                mod = il.import_module(fullpath)
-                loaded_modules[modname] = mod
-                for name, func in mod.opcodes.items():
-                    custom_opcodes[name] = func
+                mod = il.import_module(modkey)
+                if hasattr(mod, "opcodes"):
+                    loaded_modules[modkey] = mod
+                    for name, func in mod.opcodes.items():
+                        custom_opcodes[name] = func
+                else:
+                    print(c.Fore.YELLOW + f"USE ; Module '{modname}' has no opcodes dictionary." + c.Fore.RESET)
             except ModuleNotFoundError as e:
                 print(c.Fore.RED + f"USE ; Module '{modname}' not found!" + c.Fore.RESET)
-                exit()
+                s.exit()
             l += 1
         elif opcode == "UNLOAD":
             """unloads custom opcodes from specified module"""
             if len(parts) < 2:
                 print(c.Fore.RED + f"UNLOAD ; Missing module filename!" + c.Fore.RESET)
-                exit()
-            modname = parts[1].replace(".py", "")
-            if modname not in loaded_modules:
+                s.exit()
+            modname = parts[1]
+            modkey = modname.replace(".py","").replace(".pyd","")
+            if modkey not in loaded_modules:
                 print(c.Fore.RED + f"UNLOAD ; Module '{modname}' is not loaded!" + c.Fore.RESET)
             else:
-                mod = loaded_modules.pop(modname)
-                for op in mod.opcodes.keys():
+                mod = loaded_modules.pop(modkey)
+                for op in getattr(mod, "opcodes", {}).keys():
                     custom_opcodes.pop(op, None)
             l += 1       
+        elif opcode.startswith("["):
+            l += 1
         else:
             print(c.Fore.RED + f"INTERPRETER ; Invalid opcode: '{split[l]}'! Line: {l+1}" + c.Fore.RESET)
-            exit()
+            s.exit()
 if len(s.argv) > 1:
     try:
         f = open(" ".join(s.argv[1:]))
         evaluate(f.read())
         input("Press enter to exit.")
-        exit()
+        s.exit()
     except OSError as e:
         print(c.Fore.RED + f"Interpreter ; OS Error: {e}" + c.Fore.RESET)
 else:
     print("No file specified for interpretation.")
     input("Press enter to exit.")
-    exit()
+    s.exit()

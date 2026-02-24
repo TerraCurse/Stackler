@@ -1,5 +1,5 @@
-USE examplemodule.py
+USE examplemodule
 HRT 3
 ."3 hearts :]"
-UNLOAD examplemodule.py
+UNLOAD examplemodule
 HRT 3
