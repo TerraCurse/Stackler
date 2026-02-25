@@ -438,6 +438,7 @@ def evaluate(tcode: str):
             except ModuleNotFoundError as e:
                 print(c.Fore.RED + f"USE ; Module '{modname}' not found!" + c.Fore.RESET)
                 s.exit()
+            print(custom_opcodes)
             l += 1
         elif opcode == "UNLOAD":
             """unloads custom opcodes from specified module"""
@@ -452,20 +453,73 @@ def evaluate(tcode: str):
                 mod = loaded_modules.pop(modkey)
                 for op in getattr(mod, "opcodes", {}).keys():
                     custom_opcodes.pop(op, None)
-            l += 1       
+            l += 1
         elif opcode.startswith("["):
             l += 1
         else:
             print(c.Fore.RED + f"INTERPRETER ; Invalid opcode: '{split[l]}'! Line: {l+1}" + c.Fore.RESET)
             s.exit()
 if len(s.argv) > 1:
-    try:
-        f = open(" ".join(s.argv[1:]))
-        evaluate(f.read())
-        input("Press enter to exit.")
-        s.exit()
-    except OSError as e:
-        print(c.Fore.RED + f"Interpreter ; OS Error: {e}" + c.Fore.RESET)
+    if s.argv[1] == "TERMINAL":
+        print("STACKLER Terminal Mode ; Type HELP to view available commands.")
+        while True:
+            inp = input("stkl;")
+            parts = inp.split(" ")
+            if parts[0] == "MINFO": 
+                if len(parts) < 2:
+                    print(c.Fore.RED + f"MINFO ; Missing module filename!" + c.Fore.RESET)
+                    continue
+                    
+                modname = parts[1]
+                modkey = modname.replace(".py","").replace(".pyd","")
+                try:
+                    print(f"Module: {modkey}")
+                    mod = il.import_module(modkey)
+                    if hasattr(mod, "description"):
+                        print(f"Description: {mod.description}")
+                    else:
+                        print(c.Fore.YELLOW + f"No description." + c.Fore.RESET)
+                    print("Opcodes:")
+                    if hasattr(mod, "opcodes"):
+                        for name, func in mod.opcodes.items():
+                            usage = f""
+                            desc = f""
+                            if hasattr(func, "description"):
+                                desc = func.description
+                            else:
+                                desc = c.Fore.YELLOW + "No Description" + c.Fore.RESET
+                            if hasattr(func, "usage"):
+                                usage = func.usage
+                            else:
+                                usage = c.Fore.YELLOW + "No Usage Guide" + c.Fore.RESET
+                            print(f"{name} ; {usage} => {func.__name__} | Description: {desc}")
+                    else:
+                        print(c.Fore.YELLOW + f"No opcodes." + c.Fore.RESET)
+                except ModuleNotFoundError as e:
+                    print(c.Fore.RED + f"MINFO ; Module '{modkey}' not found!" + c.Fore.RESET)
+                    continue
+            elif parts[0] == "RUN":
+                try:
+                    f = open(" ".join(parts[1:]))
+                    evaluate(f.read())
+                except OSError as e:
+                    print(c.Fore.RED + f"Interpreter ; OS Error: {e}" + c.Fore.RESET)
+            elif parts[0] == "HELP":
+                print("Available commands:")
+                print("MINFO [ModuleName] - Prints information (description, opcodes) about the specified module")
+                print("RUN [file] - Interprets the specified file. (WILL EXIT OUT OF TERMINAL MODE IF AN ERROR OCCURS WHILE INTERPRETING!!)")
+                print("EXIT - Exits out of STACKLER terminal mode.")
+                print("HELP - You're litteraly using it right now.")
+            elif parts[0] == "EXIT":
+                s.exit()
+    else:
+        try:
+            f = open(" ".join(s.argv[1:]))
+            evaluate(f.read())
+            input("Press enter to exit.")
+            s.exit()
+        except OSError as e:
+            print(c.Fore.RED + f"Interpreter ; OS Error: {e}" + c.Fore.RESET)
 else:
     print("No file specified for interpretation.")
     input("Press enter to exit.")

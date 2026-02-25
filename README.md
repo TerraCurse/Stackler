@@ -1,7 +1,10 @@
 # Stackler - A simple, stack-based language.
 Stackler is a simple, stack-based language, with insanely simple syntax.
-It allows only one opcode per line.
-Turing complete!
+It allows only one opcode per line.</br>
+Turing complete!</br>
+USING TERMINAL MODE:</br>
+To use terminal mode, use the following command: stackler.py(or .exe once the new compiled version releases) TERMINAL</br>
+Use the HELP command for an overview of available commands in the terminal mode.
 ## Opcodes (i'm not that great at explaining)
 ### Labels, Numbers
 `[(labelname)` : Defines a label.</br>

@@ -7,7 +7,7 @@ Stackler assumes that the module is located in the modules folder, so make sure 
 Stackler/
 ├─ stackler.exe
 └─ Modules/
-   └─ mymodule.py
+   └─ mymodule.py (or pyd if its compiled)
 ```
 ***note: Your stackler files can be anywhere, just make sure your module is in the modules folder.***
 </br>
